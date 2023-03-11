@@ -1,19 +1,21 @@
 <script>
-
 // TODO: Create something to happen when the user has won
 
 import { textState } from "./states.js";
-let cursorPos = 0
-let setFinished = () => { alert('You finished') }
+let cursorPos = 0;
+let setFinished = () => {
+    alert("You finished");
+};
 
 export default {
     data() {
         return {
             textState,
             cursorPos,
-            setFinished
+            setFinished,
         };
     },
+    emits: ['onFinished'],
     computed: {
         console: () => console,
     },
@@ -21,26 +23,33 @@ export default {
         handleChange(event) {
             // TODO: Clean up this bloody mess
             // FIX: Make bind the max len of the input box to stop user from adding to the text when it is finished
-            const tLen = event.target.value.length
+            const tLen = event.target.value.length;
 
             if (event.target.value.length > textState.text.length) {
-                event.target.value = event.target.value.substring(0, event.target.value.length)
-                return event.preventDefault()
+                event.target.value = event.target.value.substring(
+                    0,
+                    event.target.value.length
+                );
+                return event.preventDefault();
             }
 
             if (textState.processChange(event.target.value) === true) {
                 setFinished();
-                return
+                return;
             }
 
             // swap cursor
-            this.$refs.characters.children[cursorPos].classList.remove('active')
-            cursorPos = tLen
+            this.$refs.characters.children[cursorPos].classList.remove("active");
+            cursorPos = tLen;
             if (tLen >= textState.text.length) {
-                this.$refs.characters.children[textState.text.length - 1].classList.add('active-done')
+                this.$refs.characters.children[textState.text.length - 1].classList.add(
+                    "active-done"
+                );
+
+                this.$emit('onFinished')
             } else {
-            this.$refs.characters.children[cursorPos].classList.add('active')
-}
+                this.$refs.characters.children[cursorPos].classList.add("active");
+            }
         },
         handleBeforeChange(event) {
             const len = event.target.value.length;

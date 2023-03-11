@@ -1,6 +1,6 @@
 <template>
     <MainLayout>
-        <TextDisplay />
+        <TextDisplay @onFinished="displayMessage"/>
     </MainLayout>
 </template>
 
@@ -13,5 +13,10 @@ export default {
         MainLayout,
         TextDisplay,
     },
+    methods: {
+        displayMessage() {
+            alert('good job')
+        }
+    }
 };
 </script>
