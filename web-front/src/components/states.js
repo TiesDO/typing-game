@@ -18,7 +18,7 @@ export const textState = reactive({
         tmp.replace(/\s{2}/g, " ");
 
         if (tmp.length > 250) {
-            // TODO: Make a nice cut, loop back from 250 till you find whitespace, cut there
+            // HACK: works, but can be expanded to look for the last word
             tmp = tmp.substring(0, 250);
         }
 
@@ -47,3 +47,10 @@ export const textState = reactive({
         return false
     },
 });
+
+// TODO: Create result state, which consists of:
+// - [ ] wpm and cpm
+// - [ ] backspaces (accuracy percentage)
+// - [ ] map of timings for everykey press ({ stamp: ms, correct: boolean })
+
+

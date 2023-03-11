@@ -1,6 +1,4 @@
 <script>
-// TODO: Create something to happen when the user has won
-
 import { textState } from "./states.js";
 let cursorPos = 0;
 let setFinished = () => {
@@ -21,8 +19,13 @@ export default {
     },
     methods: {
         handleChange(event) {
-            // TODO: Clean up this bloody mess
-            // FIX: Make bind the max len of the input box to stop user from adding to the text when it is finished
+            // HACK: works.. kindof
+            // - Breaks on typing more than the textState allows
+            // - Cursor does not reset (maybe implement reset on reload?)
+            // - Last character cursor placement is funky
+            // - Should also show cursor when and on start 
+            // - onyl show cursor when input element has focus
+
             const tLen = event.target.value.length;
 
             if (event.target.value.length > textState.text.length) {
@@ -62,7 +65,7 @@ export default {
 <template>
     <div class="container absolute-center">
         <label for="hiddenInput">
-            <div ref="characters" v-show="!textState.isLoading" class="text-h6 text-center text-grey-6 relative-position">
+            <div ref="characters" id="characterContainer" v-show="!textState.isLoading" class="text-h6 text-center text-grey-6 relative-position">
                 <span v-for="(item, index) in textState.text.split('')" :key="index"
                     v-bind:data-test="textState.typed[index]">
                     {{ item }}</span>
@@ -96,23 +99,28 @@ export default {
 
 div>label {}
 
-div>label>div {
+#characterContainer {
     font-family: "Courier New", Courier, monospace;
 }
 
-div>label>div span.active {
+
+#characterContainer span {
+    border: 1px solid transparent
+}
+
+#characterContainer span.active {
     border-left: 1px solid black;
 }
 
-div>label>div span.active-done {
+#characterContainer span.active-done {
     border-right: 1px solid black;
 }
 
-div>label>div [data-test="0"] {
+#characterContainer [data-test="0"] {
     color: green;
 }
 
-div>label>div [data-test="1"] {
+#characterContainer [data-test="1"] {
     color: red;
 }
 </style>
