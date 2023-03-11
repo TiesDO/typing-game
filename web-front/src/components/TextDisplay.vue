@@ -67,7 +67,7 @@ export default {
         <label for="hiddenInput">
             <div ref="characters" id="characterContainer" v-show="!textState.isLoading" class="text-h6 text-center text-grey-6 relative-position">
                 <span v-for="(item, index) in textState.text.split('')" :key="index"
-                    v-bind:data-test="textState.typed[index]">
+                    v-bind:data-test="textState.displayBuffer[index]">
                     {{ item }}</span>
             </div>
         </label>

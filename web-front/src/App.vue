@@ -6,6 +6,7 @@ import { ref } from "vue";
 import TextDisplay from "./components/TextDisplay.vue";
 import MainLayout from "./layout/MainLayout.vue";
 import TypingResult from "./components/TypingResult.vue";
+import { computeResult } from './components/states'
 
 export default {
     setup() {
@@ -18,9 +19,11 @@ export default {
         TextDisplay,
         TypingResult,
     },
-    methods: {
-        displayResult() { },
-    },
+    watch: {
+        resultsPopup() {
+            console.log(computeResult())
+        }
+    }
 };
 </script>
 
@@ -28,10 +31,14 @@ export default {
     <MainLayout>
         <TextDisplay @onFinished="resultsPopup = true" />
         <q-dialog v-model="resultsPopup">
-
-    <q-card :style="{width: '600px', 'max-width': '80vw', height: '600px', 'max-height': '70vh'}">
-            <TypingResult />
-    </q-card>
+            <q-card :style="{
+                width: '600px',
+                'max-width': '80vw',
+                height: '600px',
+                'max-height': '70vh',
+            }">
+                <TypingResult />
+            </q-card>
         </q-dialog>
     </MainLayout>
 </template>
