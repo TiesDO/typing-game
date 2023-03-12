@@ -21,6 +21,16 @@ export default {
             statTab: ref("result"),
         };
     },
+    props: {
+        cpm: {
+            type: Number,
+            default: 0
+        },
+        wpm: {
+            type: Number,
+            default: 0
+        },
+    },
     data() {
         return {
             chartData,
@@ -48,6 +58,8 @@ export default {
             <q-tab-panel name="result"> 
                 <apexchart type="donut" :options="chartData.chartOptions" width="300" height="auto"
                     :series="chartData.series" />
+            <div>cpm: {{cpm}}</div>
+            <div>wpm: {{wpm}}</div>
             </q-tab-panel>
             <q-tab-panel name="heatmap" label="KeyStrokes"></q-tab-panel>
         </q-tab-panels>

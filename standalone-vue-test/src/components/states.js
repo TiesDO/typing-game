@@ -1,5 +1,6 @@
 import { reactive } from "vue";
 
+
 export const textState = reactive({
     text: "Type to start!",
     displayBuffer: Array("Type to start!".length).fill(null),
@@ -31,6 +32,7 @@ export const textState = reactive({
     },
 
     // PERF: Updates action list and the display buffer based on a simple diff algo
+    
     processChange: (userInput) => {
         const inputLen = userInput.length;
         const inputArr = userInput.split("");
@@ -42,6 +44,7 @@ export const textState = reactive({
             time: performance.now(),
         };
 
+        // NOTE: Split the logic for storing add/remove actions
         if (inputLen > prevLen) {
             for (let i = 0; i < inputLen - prevLen; i++) {
                 let fi = prevLen + i;
@@ -93,6 +96,7 @@ export const computeResult = () => {
         }
     }
 
+    // NOTE: an action is counted as a mistake when you either type a wrong character, or remove a correct one
     let totalMistakes = 0;
     for (const a of actions) {
         if (
@@ -102,8 +106,6 @@ export const computeResult = () => {
             totalMistakes++;
         }
     }
-
-    console.log(textState.displayBuffer);
 
     return {
         cpm,

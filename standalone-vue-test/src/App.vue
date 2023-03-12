@@ -6,12 +6,13 @@ import { ref } from "vue";
 import TextDisplay from "./components/TextDisplay.vue";
 import MainLayout from "./layout/MainLayout.vue";
 import TypingResult from "./components/TypingResult.vue";
-import { computeResult } from './components/states'
+import { computeResult } from "./components/states";
 
 export default {
     setup() {
         return {
             resultsPopup: ref(false),
+            resultData: ref(null)
         };
     },
     components: {
@@ -21,9 +22,9 @@ export default {
     },
     watch: {
         resultsPopup() {
-            console.log(computeResult())
-        }
-    }
+            this.resultData = computeResult();
+        },
+    },
 };
 </script>
 
@@ -37,7 +38,7 @@ export default {
                 height: '600px',
                 'max-height': '70vh',
             }">
-                <TypingResult />
+                <TypingResult v-bind="resultData" />
             </q-card>
         </q-dialog>
     </MainLayout>
