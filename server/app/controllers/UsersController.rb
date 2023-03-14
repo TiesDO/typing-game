@@ -1,3 +1,6 @@
+require 'digest'
+require 'json'
+
 class UsersController < ApplicationController
 
 # TODO: Show the users account details and a list of their previous scores
@@ -17,6 +20,15 @@ end
 
 # TODO: Create a new users based on the information given
 def create
+  body_json = JSON.parse(request.body.read)
+  
+  # TODO: validate parameters
+
+  double = User.where(username: body_json['username'])
+  return render json: { status: 'ERROR', message: 'username already exists'}, status: '409' if double.length > 0
+
+  User.create({ username: body_json['username'], password: body_json['password'] })
+  return render json: { status: 'SUCCESS', message: 'user successfully created' }, status: '201'
 
 end
 
