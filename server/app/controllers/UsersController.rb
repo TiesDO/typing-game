@@ -9,7 +9,7 @@ def show
 end
 
 def login
-  render user_token()
+  render json: { token: user_token() }
 end
 
 def create

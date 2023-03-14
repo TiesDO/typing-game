@@ -6,8 +6,8 @@ Rails.application.routes.draw do
 
   get '/user', to: "users#index"
   get '/user/:id', to: 'users#show'
-  get '/user/login', to: 'users#login'
-  post '/user/register', to: 'users#create'
+  get '/account/login', to: 'users#login'
+  post '/account/register', to: 'users#create'
   
   get '/result/:id', to: 'results#index'
   get '/leaderboard', to: 'results#leaderboard'
