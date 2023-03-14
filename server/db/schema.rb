@@ -10,13 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_12_153231) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_14_152439) do
   create_table "results", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "cpm"
     t.integer "wpm"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "correct_cpm"
+    t.integer "time_elapsed"
+    t.integer "final_mistakes"
+    t.integer "total_mistakes"
+    t.integer "total_words"
+    t.integer "total_characters"
     t.index ["user_id"], name: "index_results_on_user_id"
   end
 
