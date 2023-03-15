@@ -43,9 +43,10 @@ class ResultsController < ApplicationController
     }
   end
 
-  # TODO: Show the top 10 results
   def leaderboard
     top = Result.all.order(cpm: :asc).limit(10)
+
+    # HACK: There must be a way to have the usernames be fetched along with the results
 
     output = []
     top.each do |r|
@@ -53,8 +54,7 @@ class ResultsController < ApplicationController
                     wpm: r['wpm'],
                     time: r['timeElapsed'],
                     user_id: r['user_id'],
-                    username: r.user.username
-                  })
+                    username: r.user.username })
     end
 
     render json: { data: output }
