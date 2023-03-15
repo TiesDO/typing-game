@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   get '/user', to: "users#index"
   get '/user/:id', to: 'users#show'
-  get '/account/login', to: 'users#login'
+  post '/account/login', to: 'users#login'
   post '/account/register', to: 'users#create'
   
   get '/result/:id', to: 'results#index'
