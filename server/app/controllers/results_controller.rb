@@ -44,7 +44,7 @@ class ResultsController < ApplicationController
   end
 
   def leaderboard
-    top = Result.all.order(cpm: :asc).limit(10)
+    top = Result.all.order(cpm: :desc).limit(10)
 
     # HACK: There must be a way to have the usernames be fetched along with the results
 
