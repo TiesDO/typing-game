@@ -76,18 +76,18 @@ export default {
                     <div class="row text-bold">Score overview</div>
                     <div class="row">
                         <div class="col-3 text-grey-7">wpm</div>
-                        <div class="col-6 text-bold text-primary">{{ Math.round(wpm) }}</div>
-                        <div class="col-3">+avg</div>
+                        <div class="col-5 text-bold text-primary">{{ Math.round(wpm) }}</div>
+                        <div class="col-4">+avg</div>
                     </div>
                     <div class="row">
                         <div class="col-3 text-grey-7">cpm</div>
-                        <div class="col-6 text-bold text-primary">{{ Math.round(cpm) }}</div>
-                        <div class="col-3">+avg</div>
+                        <div class="col-5 text-bold text-primary">{{ Math.round(cpm) }}</div>
+                        <div class="col-4">+avg</div>
                     </div>
                     <div class="row">
                         <div class="col-3 text-grey-7">time</div>
-                        <div class="col-6 text-bold text-primary">{{ timeElapsed / 1000 }} s</div>
-                        <div class="col-3">+avg</div>
+                        <div class="col-5 text-bold text-primary">{{ timeElapsed / 1000 }} s</div>
+                        <div class="col-4">+avg</div>
                     </div>
                 </div>
             </div>
