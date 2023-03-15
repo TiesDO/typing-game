@@ -73,7 +73,7 @@ class ResultsController < ApplicationController
 
     # WARN: not validating input
 
-    Result.create({
+    res = Result.create({
                     cpm: body['cpm'],
                     wpm: body['wpm'],
                     correct_cpm: body['correctCpm'],
@@ -85,12 +85,10 @@ class ResultsController < ApplicationController
                     user_id: user['id']
                   })
 
-    all = Result.where(user_id: user['id'])
-
     render json: {
       status: 'SUCCESS',
       message: 'Result created successfully',
-      data: all
+      data: res
     }, status: '201'
   end
 end
