@@ -25,7 +25,6 @@ export default {
     },
     computed: {
         currentPage() { 
-            console.log(window.location.hash)
             return routes[this.currentPath.slice(1) || '/'] || NotFound
         },
     },
