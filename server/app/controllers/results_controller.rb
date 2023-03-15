@@ -52,12 +52,12 @@ class ResultsController < ApplicationController
     top.each do |r|
       output.push({ cpm: r['cpm'],
                     wpm: r['wpm'],
-                    time: r['timeElapsed'],
+                    time: r['time_elapsed'],
                     user_id: r['user_id'],
                     username: r.user.username })
     end
 
-    render json: { data: output }
+    render json: { status: 'SUCCESS', message: 'Leaderboard entries found', data: output }
   end
 
   def create
