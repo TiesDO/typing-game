@@ -14,7 +14,7 @@ export default {
                 {name: 'username', label: 'Username', requried: true, sortable: false, field: row => row.username, align: 'left'},
                 {name: 'cpm', label: 'Cpm (characters per minut)', requried: true, sortable: false, field: row => row.cpm, align: 'left'},
                 {name: 'wpm', label: 'Wpm (Words per minut)', requried: true, sortable: false, field: row => row.wpm, align: 'left'},
-                {name: 'time', label: 'Time (in seconds)', requried: true, sortable: false, field: row => row.time, align: 'left'},
+                {name: 'time', label: 'Time (in seconds)', requried: true, sortable: false, field: row => row.time / 1000, align: 'left'},
             ]
         }
     },

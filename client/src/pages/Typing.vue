@@ -23,6 +23,7 @@ export default {
     methods: {
         retry() {
             gameState.reload()
+            this.resultsPopup = false
         }
     }
 };
@@ -44,7 +45,7 @@ export default {
             <q-separator />
             <div class="row q-py-md">
                 <div class="col flex justify-end q-gutter-md">
-                    <q-btn color="primary" label="Retry" @click="retry"/>
+                    <q-btn color="primary" label="Retry"  @click="retry"/>
                 </div>
             </div>
         </q-card>

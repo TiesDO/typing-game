@@ -1,5 +1,4 @@
 <script>
-// TODO: Allow the user to retry with a new text
 import MainLayout from "./layout/MainLayout.vue";
 import userState from '@/states/accountState.js'
 
