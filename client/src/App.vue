@@ -1,55 +1,44 @@
 <script>
 // TODO: Allow the user to retry with a new text
-
-import { ref } from "vue";
-
-import TextDisplay from "./components/TextDisplay.vue";
 import MainLayout from "./layout/MainLayout.vue";
-import TypingResult from "./components/TypingResult.vue";
-import { computeResult } from "./components/states";
+
+// import pages
+import Typing from './pages/Typing.vue'
+import Profile from './pages/Profile.vue'
+import Leaderboard from './pages/Leaderboard.vue'
+import NotFound from './pages/NotFound.vue'
+
+const routes = {
+    '/': Typing,
+    '/leaderboard': Leaderboard,
+    '/profile': Profile
+}
 
 export default {
-    setup() {
-        return {
-            resultsPopup: ref(false),
-            resultData: ref(null),
-        };
-    },
     components: {
         MainLayout,
-        TextDisplay,
-        TypingResult,
     },
-    watch: {
-        resultsPopup() {
-            this.resultData = computeResult();
+    data() {
+        return {
+            currentPath: window.location.hash,
+        };
+    },
+    computed: {
+        currentPage() { 
+            console.log(window.location.hash)
+            return routes[this.currentPath.slice(1) || '/'] || NotFound
         },
+    },
+    mounted() { 
+        window.addEventListener('hashchange', () => {
+            this.currentPath = window.location.hash
+        })
     },
 };
 </script>
 
 <template>
     <MainLayout>
-        <TextDisplay @onFinished="resultsPopup = true" />
-        <q-dialog v-model="resultsPopup">
-            <q-card :style="{
-                width: '600px',
-                'max-width': '80vw',
-                'max-height': '70vh',
-            }">
-                <div class="row">
-                    <div class="col">
-                        <TypingResult v-bind="resultData" />
-                    </div>
-                </div>
-                <q-separator />
-                <div class="row q-py-md">
-                    <div class="col flex justify-end q-gutter-md">
-                        <q-btn color="white" text-color="black" label="Profile" />
-                        <q-btn color="primary" label="Retry" />
-                    </div>
-                </div>
-            </q-card>
-        </q-dialog>
+        <component :is="currentPage" />
     </MainLayout>
 </template>
