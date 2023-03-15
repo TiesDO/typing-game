@@ -1,10 +1,19 @@
 <script>
-import { userState } from '../components/states.js'
+import userState from '@/states/accountState'
 
 export default {
     methods: {
         setNav(target) {
+            if (target === 'profile') {
+                if (userState.token !== '') {
+                    window.location.hash = `#/profile`
+                }
+                else {
+                    window.location.hash = `#/login`
+                }
+            } else {
             window.location.hash = `#/${target}`
+            }
         }
     },
     computed: {

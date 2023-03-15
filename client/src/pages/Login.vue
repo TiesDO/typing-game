@@ -1,6 +1,7 @@
 <script>
 import { ref } from "vue";
-import { userState } from "../components/states.js";
+import userState from "@/states/accountState.js";
+import { postLogin } from "@/helpers/requests.js";
 
 export default {
     data() {
@@ -18,24 +19,22 @@ export default {
     },
     methods: {
         onSubmit() {
-            this.processing = true
+            this.processing = true;
 
-            // TODO: Make login request
-            fetch("http://127.0.0.1:3000/account/login", {
-                method: "POST",
-                body: JSON.stringify({
-                    username: this.username,
-                    password: this.password,
-                }),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.status === "SUCCESS") {
-                        userState.fromToken(data.data);
-                    } else {
-                        this.error = data.error
-                    }
-                }).finally(() => { this.processing = false })
+            postLogin(this.username, this.password)
+                .then((res) => {
+                    userState.fromToken(res.data);
+
+                    setTimeout(() => {
+                        window.location.hash = "#/";
+                    }, 1000);
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+                .finally(() => {
+                    this.processing = false;
+                });
         },
     },
 };
@@ -47,6 +46,7 @@ export default {
             <q-input filled v-model="username" label="Username" />
             <q-input filled v-model="password" label="Password" />
             <q-btn label="log in" type="submit" color="primary" :disable="processing" />
+            <span v-show="error !== null">{{ error }}</span>
         </q-form>
     </div>
 </template>

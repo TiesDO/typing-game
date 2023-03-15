@@ -1,62 +1,56 @@
 <script>
-import { textState } from "./states.js";
-let cursorPos = 0;
-let setFinished = () => {
-    alert("You finished");
-};
+import { ref } from "vue";
+import gameState from "@/states/textState";
+import CharacterDisplay from "./CharacterDisplay.vue";
 
 export default {
     data() {
         return {
-            textState,
-            cursorPos,
-            setFinished,
+            gameState,
+            input: ref(""),
         };
     },
-    emits: ['onFinished'],
+    components: {
+        CharacterDisplay,
+    },
+    emits: ["onFinished"],
     computed: {
-        console: () => console,
+        textSplit() {
+            return gameState.displayText.split("");
+        },
+        isLoading() {
+            return gameState.isLoading;
+        },
+    },
+    watch: {
+        textSplit() { 
+            this.input = ""
+        },
     },
     methods: {
         handleChange(event) {
-            // HACK: works.. kindof
-            // - Breaks on typing more than the textState allows
-            // - Cursor does not reset (maybe implement reset on reload?)
-            // - Last character cursor placement is funky
-            // - Should also show cursor when and on start 
-            // - onyl show cursor when input element has focus
+            const et = event.target;
+            const etv = et.value;
+            const etvl = etv.length;
 
-            const tLen = event.target.value.length;
-
-            if (event.target.value.length > textState.text.length) {
-                event.target.value = event.target.value.substring(
-                    0,
-                    event.target.value.length
-                );
+            if (etv.length > gameState.displayText.length) {
+                event.target.value = etv.substring(0, etvl);
                 return event.preventDefault();
             }
 
-            if (textState.processChange(event.target.value) === true) {
-                setFinished();
-                return;
-            }
+            gameState.update(etv);
 
-            // swap cursor
-            this.$refs.characters.children[cursorPos].classList.remove("active");
-            cursorPos = tLen;
-            if (tLen >= textState.text.length) {
-                this.$refs.characters.children[textState.text.length - 1].classList.add(
-                    "active-done"
-                );
-
-                this.$emit('onFinished')
-            } else {
-                this.$refs.characters.children[cursorPos].classList.add("active");
+            if (etvl >= gameState.displayText.length) {
+                this.$emit("onFinished");
             }
         },
         handleBeforeChange(event) {
             const len = event.target.value.length;
             event.target.setSelectionRange(len, len);
+
+            if (len >= gameState.displayText.length) {
+                return event.preventDefault();
+            }
         },
     },
 };
@@ -65,18 +59,19 @@ export default {
 <template>
     <div class="container absolute-center">
         <label for="hiddenInput">
-            <div ref="characters" id="characterContainer" v-show="!textState.isLoading" class="text-h6 text-center text-grey-6 relative-position">
-                <span v-for="(item, index) in textState.text.split('')" :key="index"
-                    v-bind:data-test="textState.displayBuffer[index]">
-                    {{ item }}</span>
+            <div ref="characters" id="characterContainer" v-show="!isLoading"
+                class="text-h6 text-center text-grey-6 relative-position">
+                <CharacterDisplay v-for="(item, index) in gameState.displayText.split('')" :pos="index" :key="index" />
             </div>
         </label>
-        <q-spinner-oval v-show="textState.isLoading" size="2em" class="absolute-center" />
-        <input @input="handleChange" @beforeinput="handleBeforeChange" type="text" id="hiddenInput"
+
+        <q-spinner-oval v-show="isLoading" size="2em" class="absolute-center" />
+
+        <input @input="handleChange" :value="input" @beforeinput="handleBeforeChange" type="text" id="hiddenInput"
             class="absolute-top-left non-selectable no-pointer-events" />
     </div>
-    <q-icon v-show="!textState.isLoading" color="blue-grey-3" :class="{ 'anim-spinning': textState.isLoading }"
-        class="absolute-top-right q-mt-xl q-pa-sm" name="refresh" size="2em" @click="textState.reload()" />
+    <q-icon v-show="!isLoading" color="blue-grey-3" :class="{ 'anim-spinning': isLoading }"
+        class="absolute-top-right q-mt-xl q-pa-sm" name="refresh" size="2em" @click="gameState.reload()" />
 </template>
 
 <style scoped>
@@ -89,38 +84,11 @@ export default {
     margin: 0;
 }
 
-.container:focus-within {
-    /* border: 1px solid blue; */
-}
-
 .container {
     width: 80%;
 }
 
-div>label {}
-
 #characterContainer {
     font-family: "Courier New", Courier, monospace;
-}
-
-
-#characterContainer span {
-    border: 1px solid transparent
-}
-
-#characterContainer span.active {
-    border-left: 1px solid black;
-}
-
-#characterContainer span.active-done {
-    border-right: 1px solid black;
-}
-
-#characterContainer [data-test="0"] {
-    color: green;
-}
-
-#characterContainer [data-test="1"] {
-    color: red;
 }
 </style>

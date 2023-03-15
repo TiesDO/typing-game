@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import TextDisplay from '../components/TextDisplay.vue'
 import TypingResult from '../components/TypingResult.vue'
-import { computeResult } from '../components/states.js'
+import gameState from '@/states/textState.js'
 
 export default {
     setup() {
@@ -17,15 +17,20 @@ export default {
     },
     watch: {
         resultsPopup() {
-            this.resultData = computeResult();
+            this.resultData = gameState.getResult();
         },
     },
+    methods: {
+        retry() {
+            gameState.reload()
+        }
+    }
 };
 </script>
 
 <template>
     <TextDisplay @onFinished="resultsPopup = true" />
-    <q-dialog v-model="resultsPopup">
+    <q-dialog v-model="resultsPopup" @before-hide="retry">
         <q-card :style="{
             width: '600px',
             'max-width': '80vw',
@@ -39,8 +44,7 @@ export default {
             <q-separator />
             <div class="row q-py-md">
                 <div class="col flex justify-end q-gutter-md">
-                    <q-btn color="white" text-color="black" label="Profile" />
-                    <q-btn color="primary" label="Retry" />
+                    <q-btn color="primary" label="Retry" @click="retry"/>
                 </div>
             </div>
         </q-card>

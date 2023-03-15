@@ -1,6 +1,7 @@
 <script>
 import { ref } from "vue";
-import { userState } from "../components/states.js";
+import userState from "@/states/accountState.js";
+import { postRegister } from "@/helpers/requests";
 
 export default {
     data() {
@@ -15,25 +16,16 @@ export default {
         onSubmit() {
             this.processing = true;
 
-            fetch("http://127.0.0.1:3000/account/register", {
-                method: "POST",
-                body: JSON.stringify({
-                    username: this.username,
-                    password: this.password,
-                }),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.status === "SUCCESS") {
-                        userState.username = this.username;
+            postRegister(this.username, this.password)
+                .then(() => {
+                    userState.username = this.username;
 
-                        // redirect automatically to login page
-                        setTimeout(() => {
-                            window.location.hash = "#/login";
-                        }, 1000);
-                    } else {
-                        this.error = data.message;
-                    }
+                    setTimeout(() => {
+                        window.location.hash = "#/login";
+                    }, 1000);
+                })
+                .catch((err) => {
+                    console.error(err);
                 })
                 .finally(() => {
                     this.processing = false;

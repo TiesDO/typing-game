@@ -1,7 +1,7 @@
 <script>
 // TODO: Allow the user to retry with a new text
 import MainLayout from "./layout/MainLayout.vue";
-import { userState } from './components/states.js'
+import userState from '@/states/accountState.js'
 
 // import pages
 import Typing from './pages/Typing.vue'
@@ -33,13 +33,6 @@ export default {
         currentPage() { 
             return routes[this.currentPath.slice(1) || '/'] || NotFound
         },
-        profileLabel() {
-            if (userState.token === '') {
-                return 'Login/Register'
-            } else {
-                return userState.username
-            }
-        }
     },
     watch: {
         userState() {
