@@ -118,3 +118,18 @@ export const computeResult = () => {
         totalCharacters,
     };
 };
+
+export const userState = reactive({
+    username: '',
+    token: '',
+    id: '',
+    isLoggedIn() {
+        return this.token !== ''
+    },
+    fromToken(token) {
+        this.token = token
+        let payload = JSON.parse(atob(token.split('.')[0]))
+        this.username = payload['un']
+        this.id = payload['id']
+    },
+})

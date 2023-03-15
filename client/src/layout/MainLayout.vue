@@ -1,9 +1,19 @@
 <script>
+import { userState } from '../components/states.js'
 
 export default {
     methods: {
         setNav(target) {
             window.location.hash = `#/${target}`
+        }
+    },
+    computed: {
+        profileLabel() {
+            if (userState.token === '') {
+                return 'Login/Register'
+            } else {
+                return userState.username
+            }
         }
     }
 }
@@ -24,7 +34,7 @@ export default {
                     <q-separator dark vertical />
                     <q-btn stretch flat label="Leaderboard" @click="setNav('leaderboard')"/>
                     <q-separator dark vertical />
-                    <q-btn stretch flat label="Profile" @click="setNav('profile')"/>
+                    <q-btn stretch flat :label="profileLabel" @click="setNav('profile')"/>
                 </q-toolbar>
             </div>
         </q-header>
