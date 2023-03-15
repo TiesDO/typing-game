@@ -32,7 +32,6 @@ export const textState = reactive({
     },
 
     // PERF: Updates action list and the display buffer based on a simple diff algo
-    
     processChange: (userInput) => {
         const inputLen = userInput.length;
         const inputArr = userInput.split("");
@@ -85,7 +84,7 @@ export const computeResult = () => {
     let cpm = (totalCharacters * 60) / (timeElapsed / 1000);
     let actions = textState.actions.slice(); // shallow clone of the actions
 
-    let correct_cpm = actions.filter(
+    let correctCpm = actions.filter(
         (a) => a.type === "+" && a.char === a.exp
     ).length;
 
@@ -110,7 +109,7 @@ export const computeResult = () => {
     return {
         cpm,
         wpm,
-        correct_cpm,
+        correctCpm,
         actions,
         timeElapsed,
         finalMistakes,
